@@ -980,17 +980,17 @@ All of the original subcorpora make a distinction between what a child actually 
 			\textbf{subcorpus} & \texttt{words} & \texttt{morphemes} 	& \texttt{morphemes} & \texttt{morphemes} \\
 							   & \texttt{word}  & \texttt{morpheme} 	& \texttt{gloss} 	 & \texttt{pos} \\
 		\midrule
-			CLC	(ctn) 		   & a			  	 & t					& t			 		& t     \\
-			CCLAS (crl)		   & a vs.\ t		 & a vs.\ t				& t			 		& t	  	\\
-			JCLD (ind)	 	   & a vs.\ t		 & t					& t			 		& - 	\\
-			AIC	(ike)		   & a vs.\ t		 & t/a					& t			 		& t  	\\
-			MPJC (jpn)		   & a vs.\ t		 & t/a					& t/a			 	& t/a 	\\
-			MYJC (jpn)		   & a vs.\ t 	  	 & t		 			& t			 		& t	  	\\
-			StRuC (rus)		   & a			  	 & t					& t			 		& t	  	\\
-			DSC	(sot)		   & a vs.\ t		 & t	 				& t			 		& t 	\\
-			KULLDD (tur)	   & a vs.\ t 	  	 & t/a					& t/a		 		& t/a	\\
-			PYC	(yua)		   & t/a			 & t					& t			 		& t	  	\\
-			SNC	(yuw)		   & t			  	 & t					& t			 		& t	  	\\
+			CLC	(Chintang) 		   & a			  	 & t					& t			 		& t     \\
+			CCLAS (Cree)		   & a vs.\ t		 & a vs.\ t				& t			 		& t	  	\\
+			JCLD (Indonesian)	 	   & a vs.\ t		 & t					& t			 		& - 	\\
+			AIC	(Inuktitut)		   & a vs.\ t		 & t/a					& t			 		& t  	\\
+			MPJC (Japanese)		   & a vs.\ t		 & t/a					& t/a			 	& t/a 	\\
+			MYJC (Japanese)		   & a vs.\ t 	  	 & t		 			& t			 		& t	  	\\
+			StRuC (Russian)		   & a			  	 & t					& t			 		& t	  	\\
+			DSC	(Sesotho)		   & a vs.\ t		 & t	 				& t			 		& t 	\\
+			KULLDD (Turkish)	   & a vs.\ t 	  	 & t/a					& t/a		 		& t/a	\\
+			PYC	(Yucatec)		   & t/a			 & t					& t			 		& t	  	\\
+			SNC	(Nungon)		   & t			  	 & t					& t			 		& t	  	\\
 		\bottomrule
 	\end{tabular}
 	\caption{Actual and target tiers in the original subcorpora}
@@ -1012,6 +1012,20 @@ Since there is not a single corpus which consistently codes the actual/target di
 	\item Finally, only two corpora (Cree and Indonesian) makes a distinction on the utterance level. This distinction is therefore completely ignored in the ACQDIV Corpus. 
 \end{itemize}
 
+% This is described in detail in issue #609.
+The current implementation for \texttt{word\und actual} and \texttt{word\und target} is encoded with a binary value in the \textit{consistent\_actual\_target} field in the corpus-specific configuration files. The reasoning behind this decision is that if a corpus has a high congruence between actual and target in child speech, it is likely, that the transcribers/annotators did not make the distinction consistently. In other words, ``inconsistently coded" means there are some cases where an actual/target distinction has been coded but they are so few that it's very unlikely that the coding is consistent. There are two corpora that are currently tagged \textit{consistent\_actual\_target$==$no}. These are Yucatec and Nungon. In Yucatec, the transcription comes on three lines (Pfeiler, p.c.):
+
+\begin{enumerate}
+\item the expression according to the norm
+\item phon: what the child actually said
+\item eng/esp: Translation into Spanish.
+\end{enumerate}
+
+\noindent In our data processing, we did not include the CHAT \textit{\%(x)pho} tier, it being located on the utterance level (i.e.\ alignment to words is not guaranteed). All in all we had too few corpora with phonetic transcriptions on that level to introduce an column like \textit{utterances.phonetic}. Perhaps in Yucatec, however, the alignment is even good enough to pull at least the Yucatec tier to the word level -- evaluation pending. 
+
+Regarding Nungon, the transcriber aims to write down the actual word spoken by the child (Sarvasy, p.c.). If the spoken form by the child diverges phonetically or phonologically from the adult enough to be noticed by the transcriber, this should be documented on the first tier. The second tier then reflects the target form, as understood by the transcriber. Large differences are noted by the transcriber, but minor ones may be missed (e.g.\ the child doesn't articulate a word medial syllable carefully). Hence Nungon given our criteria for inconsistent encoding is marked as ``no'', but this is due to the very few data points that we have and this issue should be revisited in the future when more data is put into the pipeline.
+
+Finally, there is largely no difference in \textit{consistent\_actual\_target$==$yes} languages in the adult forms. That is, most transcriptions of words by adults are the same between actual spoken utterance and the target form. This seems a bit confusing from a database point-of-view, i.e.\ a lot of duplicated between two or three fields in the same table (word, word\_actual, word\_target). But the reasoning here is that each column can be taken separately depending on the analysis.
 
 \section{Conventions}
 \label{sec:Conventions and standardization}
