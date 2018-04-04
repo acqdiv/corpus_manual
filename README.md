@@ -1,2 +1,2 @@
-# corpus_manual
-Manual for the ACQDIV Corpus
+# ACQDIV corpus manual
+Manual for the ACQDIV corpus database
