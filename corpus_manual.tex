@@ -767,6 +767,7 @@ The table below shows which of the utterance columns are regularly filled in whi
 		\texttt{word\und actual}	& the word form the speaker actually produced; may be empty when only the target form is known & data \\
 		\texttt{word\und target}	& the word form the speaker intended to produce; may be empty when only the actual form is known & data \\
 		\texttt{pos}				& the standardized part-of-speech tag of the stem of the word & postprocessing \\
+		\texttt{pos\und ud}       &  the universal part-of-speech tag\footnote{\url{http://universaldependencies.org/u/pos/}} of the stem of the word & postprocessing \\
 		\texttt{warning}			& warnings about formal problems on the word level, e.g.\ missing or broken glosses & parsing \\
 
 	\label{tab:Table words}
@@ -795,6 +796,7 @@ The table below shows which of these columns are regularly filled in which of th
 	word\und actual 			&  + 		& + 	& + 		& +  		 & + 	  & +  		& + 	 & +  		& + 	  & (+)  & - \\
 	word\und target 			&  - 		& + 	& + 		& +  		 & + 	  & +  		& - 	 & +  		& + 	  & + 	 & + \\
 	pos 						&  + 		& + 	& (+)  		& +  		 & + 	  & +  		& + 	 & +  		& + 	  & +    & + \\
+        pos\und ud 						&  + 		& + 	& (+)  		& +  		 & + 	  & +  		& + 	 & +  		& + 	  & +    & + \\
 
 \end{longtable}
 \normalsize
@@ -1459,6 +1461,41 @@ The ACQDIV Corpus uses a standardized set of part-of-speech tags in the column \
 	\end{tabbing}
 \end{multicols}
 
+The Universal Dependency (UD) part-of-speech tag is added to the column \texttt{words.pos\und ud}. It is derived from the raw POS label and not from the standardized ACQDIV tag, i.e. every corpus has a separate mapping which is defined in the corresponding configuration file. The reason for this is that the UD tags are more specific in some cases. For instance, the UD tag-set distinguishes between determiners (DET) and pronouns (PRON) whereas the ACQDIV tag-set conflates them to PRODEM. This would lead to arbitrary mappings like `PRODEM=PRON' which would bias the UD label distribution. There are also numerous cases where the raw tags are less specific than the UD tags. In these cases, we map them to the most common equivalent. All cases are listed in Table \ref{tab:mapping-raw-UD}.
+
+
+\begin{longtable}{lp{.2\linewidth}p{.5\linewidth}}
+	\toprule
+		\textbf{Corpus} & \textbf{Mapping} 	& \textbf{Comment} \\
+	\midrule
+	\endhead
+		
+	\bottomrule\\[-0.15cm]
+	\caption{Problematic mappings of raw to UD POS tags.}
+	\endfoot
+		Chintang                  & gm = PART                 & Some of these are ADP. In Nepali, CCONJ and SCONJ are also possible. \\
+		Chintang                  & n = NOUN                  & PROPN are not marked. \\
+		Chintang                  & pro = PRON                & There is no lexical distinction between referential and adnominal pronouns in Chintang, but in UD they would probably be tagged as DET even when simply used adnominally in syntax. \\
+		Cree                      & p,conjn = CCONJ           & It seems like there is no difference between subordinating and coordinating conjunctions in Cree, and all conjunctions in our corpus have glosses that one would rather associate with a coordinating function. However, there are very clear (verbal inflectional) markers of subordination with which these conjunctions can co-occur. Thus, UD might require that they be tagged as SCONJ in such cases. \\
+		Cree                      & pro,* = PRON              & This is a whole class of tags, some of which might also be DET in the UD framework. \\ 
+		Inuktitut                 & DEM, DM, DR, LR = PRON    & These are demonstrative stems whose translation and classification depends a lot on case. In the ABS or ERG, they correspond to English pronouns, in the various LOC cases to (pronominal) adverbs such as `here', `there', which in UD would be tagged ADV. \\ 
+		Japanese MiiPro/Miyata    & conj = CCONJ              & Some of these would probably be counted as SCONJ under the UD definition, but most are CCONJ. \\
+		Japanese MiiPro/Miyata    & n:deic:pr(e)s \hspace{2cm} = PRON      & The personal pronouns behave like ordinary nouns in Japanese, but this classification is probably more in the comparative spirit of UD. \\
+		Japanese MiiPro/Miyata    & ptl:conj = PART           & This is a heterogeneous class, some of whose members would rather correspond to ADP or SCONJ, depending on their use in syntax. \\
+		Nungon                    & d, dem = PRON             & Some of these can probably be used adnominally, i.e. they would be DET depending on use. \\ 
+		Nungon                    & n = NOUN                  & PROPN is not distinguished. \\
+		Russian                   & CONJ = CCONJ              & Some of these are definitely SCONJ, but the two types that cover 70\% of all tokens (`a' and `i') are CCONJ. \\
+		Russian                   & NA = PRON                 & This also includes some potential DET. \\
+		Russian                   & PRO-DEF, PRO-DEM, \hspace{2cm} PRO-INTERROG, PRO-REFL = PRON & This could also be DET. Note, though, that in most cases Russian consistently distinguishes between adnominal and referential use, e.g. PRO-DEM-ADJ vs. PRO-DEM-NOUN. Thus, this is much less of a problem than in the other corpora. \\
+		Sesotho                   & cj = CCONJ                & Most of these seem to be CCONJ, but it is not excluded that there are also SCONJ. The grammatical situation is similar to Cree, i.e. subordination is mainly expressed via verbal inflections. \\
+		Sesotho                   & d = PRON                  & These words can also be used adnominally (DET). \\
+		Sesotho                   & ps = DET                  & Possessives are adnominal by default, but they can also refer (e.g. `Whose is this?'). \\
+		Turkish                   & CON* = CCONJ              & The two most frequent types, which cover 80\% of all tokens (`dA', `ama'), are clearly CCONJ, but others might be SCONJ. \\
+		Yucatec                   & CONJ = CCONJ              & The two most frequent types are CCONJ and cover 75\% of all tokens (`kux', `pero'). Others might be SCONJ. \\
+		Yucatec                   & DET = DET                 & The Yucatec tag also covers forms that can be used referentially. It is not clear what criteria the use of DET in the corpus was based on (it does not seem to be syntax). \\
+		Yucatec                   & QUANT = PRON              & This includes many forms that can also be used adnominally (DET), but only syntactic annotations would help us. \\
+		\label{tab:mapping-raw-UD}
+\end{longtable}
 
 \chapter{Data sources}
 \label{cha:Data sources}
@@ -3261,7 +3298,7 @@ After the tables have been filled, any edits and additions that are best perform
 
 \begin{itemize}
 	\item Glosses (\texttt{morphemes.gloss\und raw}) and parts of speech (\texttt{morphemes.pos\und raw}) are unified across corpora based on the lists given in \autoref{subsec:Grammatical glosses} and \autoref{subsec:Part-of-speech tags}. 
-		The modified labels are written to \texttt{morphemes.gloss} and \texttt{morphemes.pos}, respectively. 
+		The modified labels are written to \texttt{morphemes.gloss} and \texttt{morphemes.pos}/\texttt{words.pos\und ud}, respectively. 
 	\item \texttt{utterances.utterance\und raw} is cleaned of any remaining punctuation and other special markers (cf. the \hyperref[subsec:Transcription conventions]{transcription conventions}); the new content is put into \texttt{utterances.utterance}.
 	\item In the \texttt{utterances} table, \texttt{start\und raw} and \texttt{end\und raw} are unified to the format HH:MM:SS. 
 	\item The \texttt{language} field is set in various tables tables based on the \texttt{corpus} field.
