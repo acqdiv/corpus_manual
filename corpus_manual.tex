@@ -1520,8 +1520,31 @@ The ACQDIV Corpus uses a standardized set of part-of-speech tags in the column \
 	\end{tabbing}
 \end{multicols}
 
-The Universal Dependency (UD) part-of-speech tag is added to the column \texttt{words.pos\und ud}. It is derived from the raw POS label and not from the standardized ACQDIV tag, i.e. every corpus has a separate mapping which is defined in the corresponding configuration file. The reason for this is that the UD tags are more specific in some cases. For instance, the UD tag-set distinguishes between determiners (DET) and pronouns (PRON) whereas the ACQDIV tag-set conflates them to PRODEM. This would lead to arbitrary mappings like `PRODEM=PRON' which would bias the UD label distribution. There are also numerous cases where the raw tags are less specific than the UD tags. In these cases, we map them to the most common equivalent. All cases are listed in Table \ref{tab:mapping-raw-UD}.
+\noindent The Universal Dependency (UD) part-of-speech tag set contains the 17 following categories.\footnote{\url{http://universaldependencies.org/u/pos/}}
 
+\begin{multicols}{2}
+	\begin{tabbing}
+ADJ \hspace{2cm} \=  adjective \\
+ADP \> adposition \\
+ADV \> adverb \\
+AUX \> auxiliary \\
+CCONJ \> coordinating conjunction \\
+DET \> determiner \\
+INTJ \> interjection \\
+NOUN \> noun \\
+NUM \> numeral \\
+PART \> particle \\
+PRON \> pronoun \\
+PROPN \> proper noun \\
+PUNCT \> punctuation \\
+SCONJ \> subordinating conjunction \\
+SYM \> symbol \\
+VERB \> verb \\
+X \> other \\
+	\end{tabbing}
+\end{multicols}
+
+\noindent The UD part-of-speech tag is added to the column \texttt{words.pos\und ud}.\footnote{\url{http://universaldependencies.org/u/pos/}} It is derived from the raw POS label and not from the standardized ACQDIV tag, i.e. every corpus has a separate mapping which is defined in the corresponding configuration file. The reason for this is that the UD tags are more specific in some cases. For instance, the UD tag-set distinguishes between determiners (DET) and pronouns (PRON) whereas the ACQDIV tag-set conflates them to PRODEM. This would lead to arbitrary mappings like `PRODEM=PRON' which would bias the UD label distribution. There are also numerous cases where the raw tags are less specific than the UD tags. In these cases, we map them to the most common equivalent. All cases are listed in Table \ref{tab:mapping-raw-UD}.
 
 \begin{longtable}{lp{.2\linewidth}p{.5\linewidth}}
 	\toprule
