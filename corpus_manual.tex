@@ -1579,6 +1579,17 @@ X \> other \\
 		\label{tab:mapping-raw-UD}
 \end{longtable}
 
+
+\begin{comment}
+Some additional notes on POS categories.
+
+So. When it comes to pronouns and their ilk, UD works very differently from the ACQDIV POS tags. There is DET, which can basically be anything that is used adnominally but not an adjective, and there is PRON, which is a similar dustbin category but for nominal/referential use. ACQDIV is both more and less precise because the corpora allow us to distinguish e.g. between adnominal demonstratives (PRODEM) and adnominal numerals (NUM, both DET in UD) but on the other hand we lump a lot of things together to PRODEM where our corpora don't have a smallest common denominator, whereas UD distinguishes PRON and DET.
+
+All article-like things are DET in UD, even adnominal numerals (cf. http://universaldependencies.org/u/pos/index.html). That's why all the Turkish thingies above end up as DET. In the ACQDIV system, the elements that are clearly deictic (ART:DEM, ART:WH) end up as PRODEM. ART:IDEF, ART:INDEF, and ART/INDEF are all inconsistent labels for a single thing, viz. the numeral bir 'one', which is very often used like an indefinite article in Turkish. In UD this is very clearly DET, but since deicticity is a bit less clear here and PRODEM is already big and ugly I chose to classify it as NUM in ACQDIV. You may replace this by PRODEM if you wish - both decisions are compromises where the ACQDIV system does not really match the grammar of Turkish too well.
+
+The last label, "ART", is another case of inconsistent labeling. Basically it's underspecification - it could be either ART:DEM or ART:INDEF. I don't know why this label is used, maybe it stems from an earlier phase of the KULLDD project where they didn't differentiate between adnominal demonstratives and bir yet. Anyways, since we don't know if it's PRODEM or NUM, it's ???. If you choose to include bir in PRODEM, ART would become PRODEM, too, because it could no longer mean NUM. I hope this is comprehensible...
+\end{comment}
+
 \chapter{Data sources}
 \label{cha:Data sources}
 % TODO add documentation for sources of metadata (XPath for IMDIs, CHAT tiers otherwise)
